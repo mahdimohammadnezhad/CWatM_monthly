@@ -65,6 +65,7 @@ if "modflow_coupling" in option:
 
 #import xlrd
 #import openpyxl
+gdal.UseExceptions()
 
 # ---------------------------
 
@@ -113,7 +114,6 @@ def CWATMexe(settings):
 
 
     """
-
     parse_configuration(settings)
     # print option
     # print binding

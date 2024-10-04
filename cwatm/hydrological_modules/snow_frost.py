@@ -9,6 +9,7 @@
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
+import pandas as pd
 
 class snow_frost(object):
 
@@ -317,6 +318,7 @@ class snow_frost(object):
 
         month = dateVar['currDate'].month - 1
         # run through all snow layers
+
         for i in range(self.var.numberSnowLayers):
 
             if self.var.lapseratevar:
