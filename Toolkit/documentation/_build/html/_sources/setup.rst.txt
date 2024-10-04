@@ -24,25 +24,31 @@ Downloading Python and the required Python packages is covered in our `YouTube t
 External libraries
 -------------------
 
-These five Python packages are needed:
+These six Python packages are needed:
 
 1. `NumPy <http://www.numpy.org>`_
 2. `SciPy <https://www.scipy.org>`_
 3. `netCDF4 <https://pypi.python.org/pypi/netCDF4>`_
 4. `pandas <https://pypi.org/project/pandas>`_
+5. `xmipy <https://pypi.org/project/xmipy>`_
+6. `openpyxl <https://pypi.org/project/openpyxl>`_
 
-These four libraries can be installed with pip, conda, or downloaded at `Unofficial Windows Binaries for Python Extension Packages <http://www.lfd.uci.edu/~gohlke/pythonlibs>`_
+These six libraries can be installed with pip, conda, or downloaded at `Unofficial Windows Binaries for Python Extension Packages <http://www.lfd.uci.edu/~gohlke/pythonlibs>`_
 
-5. `GDAL <http://www.gdal.org>`_
+7. `GDAL <http://www.gdal.org>`_
 
 .. note::
    | **Troublemaker GDAL**
    | Installing GDAL via pip can be troublesome. We recommend downloading the library from
-   | `Unofficial Windows Binaries for Python Extension Packages <http://www.lfd.uci.edu/~gohlke/pythonlibs>`_
-   | as GDAL-3.0.4-cp311-cp311m-win_amd64.whl (depending on your Python version) and installing as:
+   | `Christoph Gohkles github page - geospatial-wheels <https://github.com/cgohlke/geospatial-wheels/releases>`_
+   | as GDAL-3.9.2-cp312-cp312m-win_amd64.whl (depending on your Python version) and installing as:
    | pip install C:/Users/XXXXX/Downloads/GDAL-3.0.4-cp37-cp37m-win_amd64.whl
    |
    | Sometimes problems occur if you have installed GDAL separately (or a software did, like QGIS)
+
+.. note::
+   | **Numpy version 2.0**
+   | the branch:develop version work now with Numpy 2.x
 
 These additional packages are used for the post-processing Notebooks (in CWatM/Toolkit)
 
@@ -50,10 +56,10 @@ These additional packages are used for the post-processing Notebooks (in CWatM/T
 * `plotly <https://pypi.org/project/plotly/>`_
 * `XlsxWriter <https://pypi.org/project/XlsxWriter/>`_
 
-These additional packages are used for CWatM-MODFLOW
+These additional package are used for CWatM-MODFLOW
 
 * `FloPy <https://www.usgs.gov/software/flopy-python-package-creating-running-and-post-processing-modflow-based-models>`_
-* `xmipy <https://pypi.org/project/xmipy>`_
+
 
 
 Installing
@@ -94,7 +100,7 @@ Compiling a version
 C++ sourcecode is in *../cwatm/hydrological_modules/routing_reservoirs/t5.cpp*
 
 .. note::
-    A compiled version is already provided for Windows and Linux.
+    A compiled version is already provided for Windows and Linux and Apple.
 
 **Windows**
 
@@ -129,6 +135,7 @@ To compile with g++::
 
 
 .. warning:: Please rename your compiled version to t5_linux.so! At the moment the file t5_linux.so is compiled with Ubuntu Linux
+
 
 
 Error and exeption handling
