@@ -25,6 +25,11 @@ Burek, P., Smilovic, M., Guillaumot, L., de Bruijn, J., Greve, P., Satoh, Y., Is
 
 Publication using CWatM
 =======================
+#. Hanus, S. , Burek, P. , Smilovic, M. , Seibert, J., & Viviroli, D. (2024). Seasonal variability in the global relevance of mountains to satisfy lowland water demand. Environmental Research Letters 19 (11) e114078. 10.1088/1748-9326/ad8507
+#. Palazzo, A. , Kahil, T. , Willaarts, B. , Burek, P. , van Dijk, M. , Tang, T. , Magnuszewski, P., Havlík, P. , Langan, S. , & Wada, Y. (2024). Assessing sustainable development pathways for water, food, and energy security in a transboundary river basin. Environmental Development 51 e101030
+#. Heinicke, S., Volkholz, J., Schewe, J., Gosling, S.N, Müller Schmied, H., Zimmermann, S., Mengel, M., Sauer, I.J, Burek, P. , Chang, J., Kou-Giesbrecht, S., Grillakis, M., Guillaumot, L., Hanasaki, N., Koutroulis, A., Otta, K., Qi, W., Satoh, Y., Stacke, T., Yokohata, T., et al. (2024). Global hydrological models continue to overestimate river discharge. Environmental Research Letters 19 (7) e074005. 10.1088/1748-9326/ad52b0
+#. Becher, O., Smilovic, M. , Verschuur, J., Pant, R., Tramberend, S. , & Hall, J. (2024). The challenge of closing the climate adaptation gap for water supply utilities. Communications Earth & Environment 5 (1) e356. 10.1038/s43247-024-01272-3
+#. Awais, M. , Vinca, A. , Byers, E. , Frank, S. , Fricko, O. , Boere, E., Burek, P. , Poblete Cazenave, M., Kishimoto, P.N. , Mastrucci, A. , Satoh, Y., Palazzo, A. , McPherson, M., Riahi, K. , & Krey, V. (2024). MESSAGEix-GLOBIOM nexus module: integrating water sector and climate impacts. Geoscientific Model Development 17 (6) 2447-2469. 10.5194/gmd-17-2447-2024
 #. Fridman, D., Smilovic, M., Burek, P., Tramberend, S., and Kahil, T.: Wastewater matters: Incorporating wastewater reclamation into a process-based hydrological model (CWatM v1.08), Geosci. Model Dev. Discuss. [preprint], https://doi.org/10.5194/gmd-2024-143  in review
 #. Wolkeba, F.T., Mekonnen, M.M., Brauman, K.A. et al. Indicator metrics and temporal aggregations introduce ambiguities in water scarcity estimates. Sci Rep 14, 15182 (2024). https://doi.org/10.1038/s41598-024-65155-5
 #.  Smilovic, M. , Burek, P. , Fridman, D. , Guillaumot, L., de Bruijn, J. , Greve, P., Wada, Y. , Tang, T. , Kronfuss, M., Hanus, S., Tramberend, S. , & Kahil, T. (2024). Water circles—a tool to assess and communicate the water cycle. Environmental Research Letters 19 (2) e021003. 10.1088/1748-9326/ad18de
@@ -82,9 +87,8 @@ CWatM started in April 2016
 
 | **Leading WAT Program and group:**
 | David Wiberg (2014-2015), Bill Cosgrove and Peter Burek (2016), Simon Langan (2016-2019), Yoshihide Wada (2019-2020), Taher Kahil (2021-)
-| We are deeply saddened to share the news of the passing of Bill Cosgrove (1932-2024), former Acting Director of the IIASA Water Program 
 | **Hydrology and Programming:** 
-| Peter Burek (2016-), Yoshihide Wada(2016-), Yusuke Satoh(2016-), Peter Greve(2017-2022), Mikhail Smilovic(2018-), Luca Guillaumot(2018-), Jens de Bruijn(2019-), Sarah Hanus (2022-), Dor Fridman (2022-), Emilio Politti (2023-), Jessica Ferrel (2023-)
+| Peter Burek (2016-), Yoshihide Wada(2016-), Yusuke Satoh(2016-), Peter Greve(2017-2022), Mikhail Smilovic(2018-), Luca Guillaumot(2018-), Jens de Bruijn(2019-), Sarah Hanus (2022-), Dor Fridman (2022-), Emilio Politti (2023-), Jessica Ferrel (2023-), Silvia Artuso (2023-), Carla Catania (2024-)
 | **Interface to Water Quality and Hydro-economic modeling:**
 | Taher Kahil (2016-), Ting Tang (2018-)
 | **GIS:** 

@@ -214,7 +214,6 @@ class evaporation(object):
                                 1)
 
                         except:
-
                             self.var.fracCrops_IrrLandDemand[i] = readnetcdf2(self.var.Crops_names[i] + '_Irr', dateVar['currDate'],
                                                                   'yearly',
                                                                   value=re.split(r'[^a-zA-Z0-9_[\]]', cbinding(self.var.Crops_names[i] + '_Irr'))[-2])

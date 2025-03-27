@@ -602,7 +602,8 @@ class outputTssMap(object):
                         if map[-9:] == "annualtot":
                             vars(self.var)[varname + "_annualtot"] = vars(self.var)[varname + "_annualtot"] + vars(self.var)[varname]
                         if map[-9:] == "annualavg":
-                            vars(self.var)[varname + "_annualavg"] = vars(self.var)[varname + "_annualavg"] + vars(self.var)[varname]
+                            #vars(self.var)[varname2 + "_annualavg"] = vars(self.var)[varname2 + "_annualavg"] + vars(self.var)[varname]
+                            vars(self.var)[varname + "_annualavg"] = vars(self.var)[varname + "_annualavg"] + eval(inputmap)
 
                         if dateVar['checked'][dateVar['currwrite'] - 1]==2:
                             if map[-9:] == "annualtot":
