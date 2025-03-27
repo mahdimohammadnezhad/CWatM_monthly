@@ -145,7 +145,7 @@ class waterdemand_irrigation:
         soilWaterStorage = self.var.w1[No] + self.var.w2[No]
         soilWaterStorageCap = self.var.ws1[No] + self.var.ws2[No]
         relSat = soilWaterStorage / soilWaterStorageCap
-        # PB cause some trouble
+        # PB cause some trouble!
         #satAreaFrac = np.maximum(1 - (1 - relSat),0) ** self.var.arnoBeta[No]
         satAreaFrac = 1 - np.maximum((1 - relSat),0) ** self.var.arnoBeta[No]
         satAreaFrac = np.maximum(np.minimum(satAreaFrac, 1.0), 0.0)
