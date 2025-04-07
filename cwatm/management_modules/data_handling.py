@@ -1974,14 +1974,19 @@ def returnBool(inBinding):
         msg = "Error 115: Value in: \"" + inBinding + "\" is not True or False! \nbut: " + b
         raise CWATMError(msg)
 
-def checkOption(inBinding):
+def checkOption(inBinding,checkfirst = False):
     """
     Check if option in settings file has a counterpart in the source code
 
     :param inBinding: parameter in settings file
+    :checkfirst: check if in settingsfile
 
     Not tested because you need to change the name eg gridSizeUserDefined = True -> gridSizeUser = True
     """
+    if checkfirst:
+        if not(inBinding in option):
+            return False
+
     lineclosest = ""
     test = inBinding in option
     if test:
