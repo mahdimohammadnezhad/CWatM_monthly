@@ -1189,6 +1189,13 @@ class lakes_reservoirs(object):
             np.put(self.var.lakeStorage, self.var.decompress_LR, lakeStorageC)
             np.put(self.var.resStorage, self.var.decompress_LR, resStorageC)
 
+            #water transfer
+            if checkOption('reservoir_transfers', True):
+                np.put(self.var.reservoir_transfers_net_M3, self.var.decompress_LR, self.var.reservoir_transfers_net_M3C)
+                np.put(self.var.reservoir_transfers_out_M3, self.var.decompress_LR, self.var.reservoir_transfers_out_M3C)
+                np.put(self.var.reservoir_transfers_in_M3, self.var.decompress_LR, self.var.reservoir_transfers_in_M3C)
+
+
         # ------------------------------------------------------------
 
         np.put(self.var.reslakeoutflow, self.var.decompress_LR, outflowC)
