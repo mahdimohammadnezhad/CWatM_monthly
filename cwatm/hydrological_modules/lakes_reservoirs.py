@@ -283,8 +283,14 @@ class lakes_reservoirs(object):
                             # create new reservoir/lake
                             col = int((float(self.var.reservoir_info[i][3]) - maskmapAttr['x']) * maskmapAttr['invcell'])
                             row = int((maskmapAttr['y'] - float(self.var.reservoir_info[i][2])) * maskmapAttr['invcell'])
-                            resnew[row,col] = self.var.reservoir_info[i][0]
-                            resnew1.append(self.var.reservoir_info[i][0])
+                            if (col<0) or (row<0) or (col> resnew.shape[1]) or  (row> resnew.shape[0]):
+                                msg = "New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
+                                msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
+                                msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
+                                raise CWATMError(msg)
+
+                            resnew[row,col] = int(self.var.reservoir_info[i][0])
+                            resnew1.append(int(self.var.reservoir_info[i][0]))
 
                     resnewC = compressArray(resnew).astype(np.int64)
                     # check if lakes/res is in map
@@ -959,8 +965,8 @@ class lakes_reservoirs(object):
 
                     if receiver_already_constructed and giver_already_constructed:
                         # if giving and receiving station already exist (is build before the year which is modelled)
-                        if (transfer[2] == 0) or (self.var.waterBodyTypC[receiver] == 5):
-                            # if receiver is outside OR the receiving is a reservoir type = 5
+                        if (transfer[2] == 0) or (self.var.waterBodyTypC[receiver] > 3):
+                            # if receiver is outside OR the receiving is a reservoir type > 3
                             reservoir_unused_receiver = 10e12
                         else:
                             # check if there is space for the water in the receiving reservoir
@@ -996,7 +1002,7 @@ class lakes_reservoirs(object):
 
 
                         # if rule is based on volume:
-                        if transfer[0] <4:
+                        if transfer[0] < 4:
                             reservoir_transfer_actual = np.minimum(reservoir_unused_receiver * 0.95,reservoir_transfer_actual)
 
                         # --- Outflow -------------------------------
@@ -1194,6 +1200,9 @@ class lakes_reservoirs(object):
                 np.put(self.var.reservoir_transfers_net_M3, self.var.decompress_LR, self.var.reservoir_transfers_net_M3C)
                 np.put(self.var.reservoir_transfers_out_M3, self.var.decompress_LR, self.var.reservoir_transfers_out_M3C)
                 np.put(self.var.reservoir_transfers_in_M3, self.var.decompress_LR, self.var.reservoir_transfers_in_M3C)
+                self.var.reservoir_transfers_net_M3C = np.compress(self.var.compress_LR,globals.inZero.copy())
+                self.var.reservoir_transfers_out_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
+                self.var.reservoir_transfers_in_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
 
 
         # ------------------------------------------------------------
