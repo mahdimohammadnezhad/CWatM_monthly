@@ -273,31 +273,34 @@ class lakes_reservoirs(object):
             self.var.waterBodyID = loadmap('waterBodyID').astype(np.int64)
 
             # look into the Excel to find if there are new reservoirs
-            if 'reservoir_add_info_in_Excel' in option:
-                if checkOption('reservoir_add_info_in_Excel'):
-                    resnew = decompress(globals.inZero.copy())
-                    resnew1 = []
-                    for i in range(len(self.var.reservoir_info)):
+            if checkOption('reservoir_add_info_in_Excel',True):
+                resnew = decompress(globals.inZero.copy())
+                resnew1 = []
+                for i in range(len(self.var.reservoir_info)):
 
-                        if self.var.reservoir_info[i][1]:
-                            # create new reservoir/lake
-                            col = int((float(self.var.reservoir_info[i][3]) - maskmapAttr['x']) * maskmapAttr['invcell'])
-                            row = int((maskmapAttr['y'] - float(self.var.reservoir_info[i][2])) * maskmapAttr['invcell'])
-                            if (col<0) or (row<0) or (col> resnew.shape[1]) or  (row> resnew.shape[0]):
-                                msg = "New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
-                                msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
-                                msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
-                                raise CWATMError(msg)
-
+                    if self.var.reservoir_info[i][1]:
+                        # create new reservoir/lake
+                        col = int((float(self.var.reservoir_info[i][3]) - maskmapAttr['x']) * maskmapAttr['invcell'])
+                        row = int((maskmapAttr['y'] - float(self.var.reservoir_info[i][2])) * maskmapAttr['invcell'])
+                        if (col<0) or (row<0) or (col> resnew.shape[1]) or  (row> resnew.shape[0]):
+                            msg ="-------------------------------------------------------------"
+                            msg += "New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
+                            msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
+                            msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
+                            print (msg)
+                            #raise CWATMWarning(msg)
+                        else:
                             resnew[row,col] = int(self.var.reservoir_info[i][0])
                             resnew1.append(int(self.var.reservoir_info[i][0]))
 
+                if len(resnew1) > 0:
                     resnewC = compressArray(resnew).astype(np.int64)
                     # check if lakes/res is in map
                     for i in resnew1:
                         if not(i in resnewC):
-                            msg = "New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
-                            raise CWATMError(msg)
+                            msg ="-------------------------------------------------------------"
+                            msg += "New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
+                            print (msg)
 
                     # check if lake/res already exists
                     index = np.where(resnewC>0)[0]
@@ -308,7 +311,6 @@ class lakes_reservoirs(object):
                                   " is at the place of an existing one No: "+ str(self.var.waterBodyID[i]) + "\n"
                             raise CWATMError(msg)
                     self.var.waterBodyID = np.where(self.var.waterBodyID == 0, resnewC, self.var.waterBodyID)
-
 
             self.var.includeWastewater = False
             # if checkoption 2nd argument = True then check first for argument ,if False print an error if not in setttings
@@ -603,11 +605,21 @@ class lakes_reservoirs(object):
             if 'Excel_settings_file' in binding:
                 self.var.reservoir_releases_excel_option = True
                 xl_settings_file_path = cbinding('Excel_settings_file')
-                self.var.reservoir_releases, self.var.reservoir_supply = \
-                    self.reservoir_releases(xl_settings_file_path)
+                self.var.reservoir_releases, self.var.reservoir_supply = self.reservoir_releases(xl_settings_file_path)
 
                 self.var.reservoir_releases = np.array(self.var.reservoir_releases)
                 self.var.reservoir_supply = np.array(self.var.reservoir_supply)
+
+        #  check if transfer has a valid receiver or giver
+        if checkOption('reservoir_transfers', True):
+            for trans in self.var.reservoir_transfers:
+                if not(trans[1] in self.var.waterBodyID):
+                    msg = "Reservoir transfer: giving reservoir is missing in Excel: " + str(trans[1])
+                    raise CWATMError(msg)
+            for trans in self.var.reservoir_transfers:
+                if not(trans[2] in self.var.waterBodyID):
+                    msg = "Reservoir transfer: receiving reservoir is missing in Excel: " + str(trans[1])
+                    raise CWATMError(msg)
 
 
     # ------------------ End init ------------------------------------------------------------------------------------
