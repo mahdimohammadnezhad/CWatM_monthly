@@ -282,13 +282,13 @@ class lakes_reservoirs(object):
                         # create new reservoir/lake
                         col = int((float(self.var.reservoir_info[i][3]) - maskmapAttr['x']) * maskmapAttr['invcell'])
                         row = int((maskmapAttr['y'] - float(self.var.reservoir_info[i][2])) * maskmapAttr['invcell'])
-                        if (col<0) or (row<0) or (col> resnew.shape[1]) or  (row> resnew.shape[0]):
-                            msg ="-------------------------------------------------------------"
-                            msg += "New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
+                        if (col<0) or (row<0) or (col> (resnew.shape[1]-1)) or  (row> (resnew.shape[0]-1)):
+
+                            msg = "---- New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
                             msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
                             msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
-                            print (msg)
-                            #raise CWATMWarning(msg)
+                            if Flags['loud']: print (msg)
+
                         else:
                             resnew[row,col] = int(self.var.reservoir_info[i][0])
                             resnew1.append(int(self.var.reservoir_info[i][0]))
@@ -298,9 +298,8 @@ class lakes_reservoirs(object):
                     # check if lakes/res is in map
                     for i in resnew1:
                         if not(i in resnewC):
-                            msg ="-------------------------------------------------------------"
-                            msg += "New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
-                            print (msg)
+                            msg = "--- New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
+                            if Flags['loud']: print (msg)
 
                     # check if lake/res already exists
                     index = np.where(resnewC>0)[0]
@@ -421,7 +420,7 @@ class lakes_reservoirs(object):
                                 chanwidth = 7.1 * np.power(self.var.lakeDis0C[resindex], 0.539)
                                 self.var.lakeAC[resindex] = lakeAFactorC * 0.612 * 2 / 3 * chanwidth * (2 * 9.81) ** 0.5
 
-                            if float(self.var.reservoir_info[i][10]) >0: self.var.lakeEvaFactor[resindex] = float(self.var.reservoir_info[i][10])
+                            if float(self.var.reservoir_info[i][10]) >0: self.var.lakeEvaFactorC[resindex] = float(self.var.reservoir_info[i][10])
                             if float(self.var.reservoir_info[i][11]) >0: self.var.resYearC[resindex] = int(self.var.reservoir_info[i][11])
 
             # bacl to lakeArea , because it is used in routing_kinematic
@@ -501,29 +500,36 @@ class lakes_reservoirs(object):
             self.var.lakeInflowOldC = self.var.lakeDis0C.copy()
         else:
             self.var.lakeInflowOldC = np.compress(self.var.compress_LR, lakeInflowIni)
+        # if a new lake is not initialized use assumption calculation
+        self.var.lakeInflowOldC = np.where(self.var.lakeInflowOldC > 0,self.var.lakeInflowOldC,self.var.lakeDis0C)
 
         lakeVolumeIni = self.var.load_initial("lakeStorage")
         if not (isinstance(lakeVolumeIni, np.ndarray)):
             self.var.lakeVolumeM3C = self.var.lakeAreaC * np.sqrt(self.var.lakeInflowOldC / self.var.lakeAC)
         else:
             self.var.lakeVolumeM3C = np.compress(self.var.compress_LR, lakeVolumeIni)
+
+        # if a new lake ist not initialized use assumption
+        self.var.lakeVolumeM3C = np.where(self.var.lakeVolumeM3C > 0, self.var.lakeVolumeM3C,self.var.lakeAreaC * np.sqrt(self.var.lakeInflowOldC / self.var.lakeAC))
         self.var.lakeStorageC = self.var.lakeVolumeM3C.copy()
 
         lakeOutflowIni = self.var.load_initial("lakeOutflow")
+        lakeStorageIndicator = np.maximum(0.0, self.var.lakeVolumeM3C / self.var.dtRouting + self.var.lakeInflowOldC / 2)
+        # SI = S/dt + Q/2
+        lakeOutflowC1 = np.square(-self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+        # solution of quadratic equation
+        #  it is as easy as this because:
+        # 1. storage volume is increase proportional to elevation
+        #  2. Q= a *H **2.0  (if you choose Q= a *H **1.5 you have to solve the formula of Cardano)
         if not (isinstance(lakeOutflowIni, np.ndarray)):
-            lakeStorageIndicator = np.maximum(0.0,
-                                              self.var.lakeVolumeM3C / self.var.dtRouting + self.var.lakeInflowOldC / 2)
-            # SI = S/dt + Q/2
-            self.var.lakeOutflowC = np.square(
-                -self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
-            # solution of quadratic equation
-            #  it is as easy as this because:
-            # 1. storage volume is increase proportional to elevation
-            #  2. Q= a *H **2.0  (if you choose Q= a *H **1.5 you have to solve the formula of Cardano)
+            self.var.lakeOutflowC = lakeOutflowC1.copy()
         else:
             self.var.lakeOutflowC = np.compress(self.var.compress_LR, lakeOutflowIni)
         # lake storage ini
+        self.var.lakeOutflowC = np.where(self.var.lakeOutflowC>0,self.var.lakeOutflowC,lakeOutflowC1)
+
         self.var.lakeLevelC = self.var.lakeVolumeM3C / self.var.lakeAreaC
+        ii =1
 
     def initial_reservoirs(self):
         """
