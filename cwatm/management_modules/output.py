@@ -72,7 +72,8 @@ class outputTssMap(object):
 
             sampleAdresses = {}
             outp = []
-            allpoints = np.where(maskinfo["mask"].data == False)
+            #allpoints = np.where(maskinfo["mask"].data == False)
+            allpoints = np.where(maskinfo["mask"] == False)
 
             for i in range(maskinfo['mapC'][0]):
                 if out[i]>0:
