@@ -315,8 +315,8 @@ class lakes_reservoirs(object):
                             raise CWATMError(msg)
                     self.var.waterBodyID = np.where(self.var.waterBodyID == 0, resnewC, self.var.waterBodyID)
 
-            for i in remove:
-                self.var.reservoir_info.remove(i)
+                for i in remove:
+                    self.var.reservoir_info.remove(i)
 
 
             self.var.includeWastewater = False
@@ -431,7 +431,7 @@ class lakes_reservoirs(object):
                             if float(self.var.reservoir_info[i][10]) >0: self.var.lakeEvaFactorC[resindex] = float(self.var.reservoir_info[i][10])
                             if float(self.var.reservoir_info[i][11]) >0: self.var.resYearC[resindex] = int(self.var.reservoir_info[i][11])
 
-            # bacl to lakeArea , because it is used in routing_kinematic
+            # back to lakeArea , because it is used in routing_kinematic
             np.put(self.var.lakeArea, self.var.decompress_LR, self.var.lakeAreaC)
             # correcting reservoir volume for lakes, just to run them all as reservoirs
             self.var.resVolumeC = np.where(self.var.resVolumeC > 0, self.var.resVolumeC, self.var.lakeAreaC * 10)
