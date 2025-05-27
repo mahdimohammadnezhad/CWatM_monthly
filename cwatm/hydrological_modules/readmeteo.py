@@ -189,6 +189,10 @@ class readmeteo(object):
         if 'only_radiation' in binding:
             self.var.only_radiation = returnBool('only_radiation')
 
+        # read PET modus if snowmelt radiation is used
+        if self.var.snowmelt_radiation:
+            self.var.pet_modus = checkOption('PET_modus')
+
         if checkOption('calc_evaporation'):
             self.var.pet_modus = checkOption('PET_modus')
 

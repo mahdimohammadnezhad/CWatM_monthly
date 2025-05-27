@@ -276,7 +276,7 @@ class lakes_reservoirs(object):
             if checkOption('reservoir_add_info_in_Excel',True):
                 resnew = decompress(globals.inZero.copy())
                 resnew1 = []
-                remove = []
+                delReservoir = []
 
                 for i in range(len(self.var.reservoir_info)):
 
@@ -290,7 +290,7 @@ class lakes_reservoirs(object):
                             msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
                             msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
                             if Flags['loud']: print (msg)
-                            remove.append(self.var.reservoir_info[i])
+                            delReservoir.append(self.var.reservoir_info[i])
 
                         else:
                             resnew[row,col] = int(self.var.reservoir_info[i][0])
@@ -299,7 +299,7 @@ class lakes_reservoirs(object):
                 if len(resnew1) > 0:
                     resnewC = compressArray(resnew).astype(np.int64)
                     # check if lakes/res is in map
-                    remove1 = []
+   
                     for i in resnew1:
                         if not(i in resnewC):
                             msg = "--- New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
@@ -315,7 +315,7 @@ class lakes_reservoirs(object):
                             raise CWATMError(msg)
                     self.var.waterBodyID = np.where(self.var.waterBodyID == 0, resnewC, self.var.waterBodyID)
 
-                for i in remove:
+                for i in delReservoir:
                     self.var.reservoir_info.remove(i)
 
 
@@ -626,20 +626,20 @@ class lakes_reservoirs(object):
 
         #  check if transfer has a valid receiver or giver
         if checkOption('reservoir_transfers', True):
-            remove = []
+            delReservoir = []
             for trans in self.var.reservoir_transfers:
                 if not(trans[1] in self.var.waterBodyID):
                     msg = "Reservoir transfer: giving reservoir is missing in Excel: " + str(trans[1])
                     if Flags['loud']: print (msg)
-                    remove.append(trans)
+                    delReservoir.append(trans)
 
             for trans in self.var.reservoir_transfers:
                 if not(trans[2] in self.var.waterBodyID):
                     msg = "Reservoir transfer: receiving reservoir is missing in Excel: " + str(trans[1])
                     if Flags['loud']: print (msg)
-                    remove.append(trans)
+                    delReservoir.append(trans)
 
-            for i in remove:
+            for i in delReservoir:
                 try:
                     self.var.reservoir_transfers.remove(i)
                 except:
