@@ -120,8 +120,10 @@ class evaporationPot(object):
         self.var.AlbedoSoil = loadmap('AlbedoSoil')
         self.var.AlbedoWater = loadmap('AlbedoWater')
 
-        if self.var.only_radiation:
+        if self.var.pet_modus == 4 or self.var.only_radiation:
             self.var.dem = loadmap('dem')
+
+        if self.var.pet_modus == 5 or self.var.only_radiation:
             self.var.lat = loadmap('latitude')
 
     # --------------------------------------------------------------------------
@@ -380,21 +382,17 @@ class evaporationPot(object):
             EmNet = (0.34 - 0.14 * np.sqrt(self.var.EAct))  # Eact in hPa but needed in kPa : kpa = 0.1 * hPa - conversion done in readmeteo
             RLN = RNup * EmNet * RsRso
 
-            Psycon = 0.00163 * (101.3 / LatHeatVap)
-            # psychrometric constant at sea level [mbar/deg C]
-            #Psycon = 0.665E-3 * self.var.Psurf
-            # psychrometric constant [kPa C-1]
-            # http://www.fao.org/docrep/X0490E/x0490e07.htm  Equation 8
-            # see http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
-            Psycon = Psycon * ((293 - 0.0065 * self.var.dem) / 293) ** 5.26  # in [KPa deg C-1]
-            # http://www.fao.org/docrep/X0490E/x0490e07.htm  Equation 7
-
         else:
             RLN = RNup - self.var.Rsdl
-            Psycon = 0.665E-3 * self.var.Psurf
-            # psychrometric constant [kPa C-1]
-            # http://www.fao.org/docrep/ X0490E/ x0490e07.htm  Equation 8
-            # see http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
+        
+        Psycon = 0.00163 * (101.3 / LatHeatVap)
+        # psychrometric constant at sea level [mbar/deg C]
+        #Psycon = 0.665E-3 * self.var.Psurf
+        # psychrometric constant [kPa C-1]
+        # http://www.fao.org/docrep/X0490E/x0490e07.htm  Equation 8
+        # see http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
+        Psycon = Psycon * ((293 - 0.0065 * self.var.dem) / 293) ** 5.26  # in [KPa deg C-1]
+        # http://www.fao.org/docrep/X0490E/x0490e07.htm  Equation 7
 
         # RDL is stored on disk as W/m2 but converted in MJ/m2/s in readmeteo.py
         RNA = np.maximum(((1 - self.var.AlbedoCanopy) * self.var.Rsds - RLN) / LatHeatVap, 0.0)
