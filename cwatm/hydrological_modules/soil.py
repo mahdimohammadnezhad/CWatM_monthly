@@ -689,7 +689,7 @@ class soil(object):
         self.var.actTransTotal_nonpaddy = self.var.actTransTotal[3]*self.var.fracVegCover[3]
 
         self.var.ET_crop_Irr_paddy = (self.var.actTransTotal_paddy+(self.var.actBareSoilEvap[3]+self.var.openWaterEvap[2])*self.var.fracVegCover[2])
-        self.var.ET_crop_Irr_paddy_fraccrop = np.where(self.var.fracVegCover[2]>0, self.var.ET_crop_Irr_paddy*self.var.fracVegCover[2], 0)
+        self.var.ET_crop_Irr_paddy_fraccrop = np.where(self.var.fracVegCover[2]>0, self.var.ET_crop_Irr_paddy/self.var.fracVegCover[2], 0)
 
         if self.var.includeCrops: #checkOption('includeCrops') and checkOption('includeCropSpecificWaterUse'):
             if No == 3:

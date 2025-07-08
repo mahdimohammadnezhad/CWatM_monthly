@@ -194,7 +194,10 @@ class readmeteo(object):
             self.var.pet_modus = checkOption('PET_modus')
 
         if checkOption('calc_evaporation'):
-            self.var.pet_modus = checkOption('PET_modus')
+            # if PET_modus is missing use Penman Monteith
+            self.var.pet_modus = 1
+            if "PET_modus" in option:
+                self.var.pet_modus = checkOption('PET_modus')
 
             if self.var.only_radiation:
                 # if addiation snowmlet from radiation
