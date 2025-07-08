@@ -244,15 +244,13 @@ class soil(object):
         # # interceptEvap is the first flux in ET, soil evapo and transpiration are added later
         # self.var.actualET[No] = self.var.interceptEvap[No].copy()
 
-        #if (dateVar['curr'] == 130) and (No==2):
-        #    ii=1
+        #if (dateVar['curr'] > 6520):
+
+
 
         availWaterInfiltration = self.var.availWaterInfiltration[No].copy()
         availWaterInfiltration = availWaterInfiltration + self.var.act_irrConsumption[No]
         # availWaterInfiltration = water net from precipitation (- soil - interception - snow + snow melt) + water for irrigation
-
-
-
 
         if coverType == 'irrPaddy':
             # depending on the crop calender -> here if cropKC > 0.75 paddies are flooded to 50mm (as set in settings file)
@@ -662,8 +660,19 @@ class soil(object):
 
         # Update soil moisture
         self.var.w1[No] = self.var.w1[No] - self.var.perc1to2[No]
+        testw = np.minimum(self.var.w1[No],0)
+        self.var.w1[No] = self.var.w1[No] - testw
+        self.var.perc1to2[No] = self.var.perc1to2[No] + testw
+
         self.var.w2[No] = self.var.w2[No] + self.var.perc1to2[No] - self.var.perc2to3[No]
+        testw = np.minimum(self.var.w2[No],0)
+        self.var.w2[No] = self.var.w2[No] - testw
+        self.var.perc2to3[No] = self.var.perc2to3[No] + testw
+
         self.var.w3[No] = self.var.w3[No] + self.var.perc2to3[No] - self.var.perc3toGW[No]
+        testw = np.minimum(self.var.w3[No],0)
+        self.var.w3[No] = self.var.w3[No] - testw
+        self.var.perc3toGW[No] = self.var.perc3toGW[No] + testw
 
         # Compute the amount of water that could not infiltrate and add this water to the surface runoff
         self.var.theta1[No] = self.var.w1[No] / self.var.rootDepth[0][No]
@@ -773,6 +782,13 @@ class soil(object):
             self.var.gwRecharge[No] = (1 - self.var.percolationImp) * toGWorInterflow
         else:
             self.var.gwRecharge[No] = (1 - self.var.percolationImp) * toGWorInterflow - self.var.capRiseFromGW[No]
+            # Check if gwRecharge < 0
+            testgw = np.minimum(self.var.gwRecharge[No],0)
+            self.var.gwRecharge[No] = self.var.gwRecharge[No] - testgw
+            self.var.capRiseFromGW[No] = self.var.capRiseFromGW[No] + testgw
+
+
+
 
 
         if checkOption('calcWaterBalance'):
