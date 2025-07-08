@@ -17,9 +17,7 @@ class soil(object):
     """
     **SOIL**
 
-
     Calculation vertical transfer of water based on Arno scheme
-
 
     **Global variables**
 
