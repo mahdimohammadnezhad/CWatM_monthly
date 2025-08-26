@@ -1,15 +1,15 @@
 [DEFAULT]
-Root = /Users/admin/Documents/GitHub/CWatM/Toolkit
-RootPC = /Users/admin/Documents/GitHub/CWatM/Toolkit
+Root = D:\Mehdi\monthly\CWatM\Toolkit
+RootPC = D:\Mehdi\monthly\CWatM\Toolkit
 Rootbasin = Calibration
 
 # start date of simulation outputs
-ForcingStart = 1/1/2006
-ForcingEnd = 31/12/2007
-timeperiod = daily
+ForcingStart = 01/09/2006
+ForcingEnd = 01/09/2016
+timeperiod = monthly
 
 [ObservedData]
-Qtss = observed_data/lobith2006.csv
+Qtss = observed_data/corrected_observation_data.csv
 
 [Path]
 Templates = templates_CWatM
@@ -46,10 +46,10 @@ use_multiprocessing = 1
 pool_limit = 4
 
 # Number of generations, recommended 10-40
-ngen = 3
+ngen = 6
 
 # Initial population, recommended 16-128
-mu = 8
+mu = 16
 
 # Runs per generation, recommended 8-16
 lambda_ = 8
