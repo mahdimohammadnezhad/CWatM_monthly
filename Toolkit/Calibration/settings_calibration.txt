@@ -13,7 +13,7 @@ Qtss = observed_data/corrected_observation_data.csv
 
 [Path]
 Templates = templates_CWatM
-SubCatchmentPath = runs_calibration
+SubCatchmentPath = runs_calibration2
 ParamRanges = ParamRanges.csv
 
 [Templates]
@@ -31,7 +31,7 @@ firstrun = False
 
 # Standard calibation parameter set
 # crop KC, soil depth, pref. flow, arno beta, interflow factor, groundwater recession, routing, normalStorageLimit, No of run
-para_first = [1.2, 1.0, 4.0, 0.5, 1.0, 1.0, 1.0, 0.5, 1.]
+para_first = [1.10, 1.01, 6.15, 0.54, 2.08, 7.97, 4.12, 0.43, 1.]
 
 # the model runs with the best parameter set after the calibration
 bestrun = True
@@ -46,12 +46,12 @@ use_multiprocessing = 1
 pool_limit = 4
 
 # Number of generations, recommended 10-40
-ngen = 6
+ngen = 12
 
 # Initial population, recommended 16-128
-mu = 16
+mu = 128
 
 # Runs per generation, recommended 8-16
-lambda_ = 8
+lambda_ = 32
 
 
